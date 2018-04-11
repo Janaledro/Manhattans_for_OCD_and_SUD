@@ -1,20 +1,23 @@
-TCS.DF<-read.csv("data/SNPS_FOR_ADDICTIONS.csv", header = T)
-pubmed_id<-TCS.DF$pubmedid
-A<-table(pubmed_id)
+TCS.DF<-read.csv("data/SNPS_FOR_ADDICTIONS.csv", header = T,
+                 stringsAsFactors = F)
 pmid<-unique(TCS.DF$pubmedid)
 
 #A CONTINUACIÓN UN LOOP FOR PARA GENERAR LA TABLA DADA POR LOS ESTUDIOS
 FINAL.DF<-data.frame(
-    matrix("", nrow = 96, ncol = 3))
+    matrix("", nrow = 96, ncol = 3), stringsAsFactors = F) 
 colnames(FINAL.DF)<-c("PUBMED_ID", "SNP_ID", "GENES")
 
 FINAL.DF$PUBMED_ID<-unlist(pmid)
 
-#trying<-grep(pattern = "\\b1\\b", TCS.DF$pubmedid)
+#INTEGRANDO LOS RSs EN LA TABLA (IDENTIFICANDO SNPs)
+indices<-grep(pattern = "\\b23533358\\b", TCS.DF$pubmedid) 
+rsids<-TCS.DF$snpid[indices]
+rsids<-paste(rsids, collapse = ",")
+FINAL.DF[1,2]<-rsids
 
-rsids[,i]<-TCS.DF$snpid[trying]
+#INTEGRACIÓN DE LA INFORMACIÓN FALTANTE EN LLLLLLLLA COLUMNA DE 
+#GENES
+genes<-TCS.DF$genesymbol[indices]
+genes<-paste(genes, collapse = ",")
+FINAL.DF[1,3]<-genes
 
-for(i in length(pmid)) {
-  message(paste0("Estoy buscando la información del estudio ", pmid[i]))
-  indice<-grep(i, TCS.DF$pubmedid[i], fixed = T)
-}
